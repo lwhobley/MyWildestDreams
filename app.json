@@ -19,8 +19,7 @@
         "backgroundColor": "#0A0B1A"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.mywildestdreams.app",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.mywildestdreams.app"
     },
     "web": {
       "bundler": "metro",
@@ -51,6 +50,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-eas-project-id"
+      }
     }
   }
 }
