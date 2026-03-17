@@ -1,21 +1,15 @@
-import { useEffect } from 'react';
-import { useRouter } from 'expo-router';
-import { isOnboardingComplete } from '@/services/dreamService';
+import { Redirect } from 'expo-router';
+import { useAuthStore } from '@/stores/authStore';
 
+/**
+ * Root redirect — determines initial route based on auth + onboarding state.
+ */
 export default function Index() {
-  const router = useRouter();
+  const { isAuthenticated, isLoading, user } = useAuthStore();
 
-  useEffect(() => {
-    async function check() {
-      const done = await isOnboardingComplete();
-      if (done) {
-        router.replace('/(tabs)');
-      } else {
-        router.replace('/onboarding');
-      }
-    }
-    check();
-  }, []);
+  if (isLoading) return null; // Splash screen handles this
 
-  return null;
+  if (!isAuthenticated) return <Redirect href="/(auth)/login" />;
+  if (!user?.onboardingCompleted) return <Redirect href="/(onboarding)/step-1" />;
+  return <Redirect href="/(app)/home" />;
 }

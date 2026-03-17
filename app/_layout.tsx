@@ -1,77 +1,30 @@
 import { useEffect } from 'react';
-import { Stack, useRouter } from 'expo-router';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AlertProvider, AuthProvider, AuthRouter } from '@/template';
-import { DreamProvider } from '@/contexts/DreamContext';
-import {
-  requestNotificationPermission,
-  scheduleAllNotifications,
-  registerNotificationTapHandler,
-  areNotificationsEnabled,
-} from '@/services/notificationService';
+import { Stack } from 'expo-router';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useAuthStore } from '@/stores/authStore';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: 1000 * 60 * 5, retry: 2 },
+    mutations: { retry: 1 },
+  },
+});
 
 export default function RootLayout() {
-  const router = useRouter();
+  const initialize = useAuthStore(s => s.initialize);
 
-  // ── Notification bootstrap ─────────────────────────────────────────────
-  useEffect(() => {
-    async function setupNotifications() {
-      const alreadyEnabled = await areNotificationsEnabled();
-
-      if (alreadyEnabled) {
-        // Re-schedule on every launch to keep triggers fresh
-        await scheduleAllNotifications();
-      } else {
-        // First launch — request permission, then schedule if granted
-        const granted = await requestNotificationPermission();
-        if (granted) await scheduleAllNotifications();
-      }
-    }
-
-    setupNotifications();
-
-    // Handle notification taps — deep-link into the right screen
-    const unsub = registerNotificationTapHandler((data) => {
-      if (data.type === 'daily_reminder' || data.type === 'streak_risk') {
-        router.push('/dream-input');
-      } else if (data.type === 'weekly_insights') {
-        router.push('/(tabs)/profile');
-      } else if (data.type === 'dream_saved') {
-        router.push('/(tabs)/library');
-      }
-    });
-
-    return unsub;
-  }, []);
+  useEffect(() => { initialize(); }, []);
 
   return (
-    <AlertProvider>
-      <SafeAreaProvider>
-        <AuthProvider>
-          <DreamProvider>
-            <AuthRouter
-              loginRoute="/login"
-              excludeRoutes={['/onboarding']}
-            >
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="login" />
-                <Stack.Screen name="onboarding" />
-                <Stack.Screen name="(tabs)" />
-                <Stack.Screen name="dream-input" />
-                <Stack.Screen
-                  name="dream-playback"
-                  options={{ presentation: 'modal', headerShown: false }}
-                />
-                <Stack.Screen name="encyclopedia" />
-                <Stack.Screen
-                  name="symbol-detail"
-                  options={{ presentation: 'card', headerShown: false }}
-                />
-              </Stack>
-            </AuthRouter>
-          </DreamProvider>
-        </AuthProvider>
-      </SafeAreaProvider>
-    </AlertProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
+          <Stack.Screen name="(onboarding)" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(app)" />
+        </Stack>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
