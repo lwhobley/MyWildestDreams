@@ -1,15 +1,17 @@
+import { useEffect, useState } from 'react';
 import { Redirect } from 'expo-router';
-import { useAuthStore } from '@/stores/authStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-/**
- * Root redirect — determines initial route based on auth + onboarding state.
- */
 export default function Index() {
-  const { isAuthenticated, isLoading, user } = useAuthStore();
+  const [onboardingDone, setOnboardingDone] = useState<boolean | null>(null);
 
-  if (isLoading) return null; // Splash screen handles this
+  useEffect(() => {
+    AsyncStorage.getItem('onboarding_completed').then((val) => {
+      setOnboardingDone(val === 'true');
+    });
+  }, []);
 
-  if (!isAuthenticated) return <Redirect href="/(auth)/login" />;
-  if (!user?.onboardingCompleted) return <Redirect href="/(onboarding)/step-1" />;
-  return <Redirect href="/(app)/home" />;
+  if (onboardingDone === null) return null;
+  if (!onboardingDone) return <Redirect href="/onboarding" />;
+  return <Redirect href="/(tabs)" />;
 }

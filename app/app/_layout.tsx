@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { COLORS } from '@/constants';
+import { Colors } from '@/constants/theme';
 import { Text, View } from 'react-native';
 
 function TabIcon({ emoji, focused, color }: { emoji: string; focused: boolean; color: string }) {
@@ -22,8 +22,8 @@ export default function AppLayout() {
           height: 80,
           paddingBottom: 16,
         },
-        tabBarActiveTintColor: COLORS.teal,
-        tabBarInactiveTintColor: 'rgba(200,200,220,0.3)',
+        tabBarActiveTintColor: Colors.tabActive,
+        tabBarInactiveTintColor: Colors.tabInactive,
         tabBarLabelStyle: {
           fontSize: 9,
           letterSpacing: 1.5,
@@ -44,7 +44,7 @@ export default function AppLayout() {
         options={{
           title: 'Record',
           tabBarIcon: ({ focused, color }) => <TabIcon emoji="◉" focused={focused} color={color} />,
-          tabBarActiveTintColor: COLORS.rose,
+          tabBarActiveTintColor: '#c77dff',
         }}
       />
       <Tabs.Screen
