@@ -250,7 +250,7 @@ export default function DreamPlaybackScreen() {
           </Pressable>
 
           <Pressable
-            onPress={() => router.push('/dream-input')}
+            onPress={() => router.push({ pathname: '/dream-input', params: { dreamId: dream.id } })}
             style={({ pressed }) => [styles.actionBtn, styles.actionBtnPrimary, pressed && styles.pressed]}
           >
             <MaterialIcons name="refresh" size={22} color={Colors.textPrimary} />
@@ -311,7 +311,6 @@ const styles = StyleSheet.create({
   },
   heroOverlay: {
     ...StyleSheet.absoluteFillObject,
-    background: 'transparent',
     backgroundColor: 'rgba(10, 11, 26, 0.4)',
   },
   topControls: {

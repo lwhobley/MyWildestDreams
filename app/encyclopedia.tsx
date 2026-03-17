@@ -38,9 +38,8 @@ export default function EncyclopediaScreen() {
     });
   }, [search, activeCategory]);
 
-  function renderSymbolCard({ item, index }: { item: SymbolEntry; index: number }) {
+  function renderSymbolCard({ item }: { item: SymbolEntry; index: number }) {
     const category = SYMBOL_CATEGORIES.find((c) => c.id === item.category);
-    const delay = Math.min(index * 40, 300);
 
     return (
       <Pressable

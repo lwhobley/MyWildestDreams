@@ -94,8 +94,8 @@ export default function ProfileScreen() {
           text: 'Clear Data',
           style: 'destructive',
           onPress: async () => {
-            const ids = [...dreams.map((d) => d.id)];
-            for (const id of ids) await removeDream(id);
+            const ids = dreams.map((d) => d.id);
+            await Promise.all(ids.map((id) => removeDream(id)));
             showAlert('Cleared', 'All dream data has been removed.');
           },
         },
@@ -218,6 +218,22 @@ export default function ProfileScreen() {
                 thumbColor={notificationsOn ? Colors.accent : Colors.textSubtle}
               />
             </View>
+            <View style={styles.divider} />
+            <View style={styles.settingRow}>
+              <View style={styles.settingInfo}>
+                <MaterialIcons name="music-note" size={20} color={Colors.gold} />
+                <View>
+                  <Text style={styles.settingLabel}>Ambient Soundscapes</Text>
+                  <Text style={styles.settingDesc}>Play ethereal audio during playback</Text>
+                </View>
+              </View>
+              <Switch
+                value={ambientSounds}
+                onValueChange={(v) => handleToggle('ambientSounds', v)}
+                trackColor={{ false: Colors.surfaceElevated, true: Colors.primary }}
+                thumbColor={ambientSounds ? Colors.accent : Colors.textSubtle}
+              />
+            </View>
           </View>
         </View>
 
@@ -237,28 +253,6 @@ export default function ProfileScreen() {
             </View>
           </View>
         ) : null}
-
-        {/* Data Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Data & Privacy</Text>
-          <View style={styles.card}>
-            <View style={styles.settingRow}>
-              <View style={styles.settingInfo}>
-                <MaterialIcons name="music-note" size={20} color={Colors.gold} />
-                <View>
-                  <Text style={styles.settingLabel}>Ambient Soundscapes</Text>
-                  <Text style={styles.settingDesc}>Play ethereal audio during playback</Text>
-                </View>
-              </View>
-              <Switch
-                value={ambientSounds}
-                onValueChange={(v) => handleToggle('ambientSounds', v)}
-                trackColor={{ false: Colors.surfaceElevated, true: Colors.primary }}
-                thumbColor={ambientSounds ? Colors.accent : Colors.textSubtle}
-              />
-            </View>
-          </View>
-        </View>
 
         {/* Data Actions */}
         <View style={styles.section}>

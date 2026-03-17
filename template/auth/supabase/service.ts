@@ -603,37 +603,3 @@ export class AuthService {
 }
 
 export const authService = new AuthService();
-// ─── Apple Sign-In (patched onto AuthService prototype) ───────────────────
-// expo-apple-authentication handles the native Apple auth sheet;
-// we pass the identity token to Supabase which exchanges it for a session.
-
-import * as AppleAuthentication from 'expo-apple-authentication';
-
-AuthService.prototype.signInWithApple = async function(): Promise<{ error: string | null }> {
-  try {
-    const credential = await AppleAuthentication.signInAsync({
-      requestedScopes: [
-        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-        AppleAuthentication.AppleAuthenticationScope.EMAIL,
-      ],
-    });
-
-    const { identityToken } = credential;
-    if (!identityToken) {
-      return { error: 'Apple did not return an identity token' };
-    }
-
-    const { error } = await this.supabase.auth.signInWithIdToken({
-      provider: 'apple',
-      token: identityToken,
-    });
-
-    if (error) return { error: error.message };
-    return { error: null };
-  } catch (err: any) {
-    if (err?.code === 'ERR_REQUEST_CANCELED') {
-      return { error: 'User cancelled Apple Sign-In' };
-    }
-    return { error: err?.message ?? 'Apple Sign-In failed' };
-  }
-};

@@ -26,6 +26,7 @@ export function WaveformVisualizer({
   // Re-run spring animations whenever data changes
   useEffect(() => {
     const animations = data.map((amplitude, i) => {
+      if (!animValues[i]) return null;
       const target = Math.max(MIN_BAR_FRACTION, amplitude);
       return Animated.spring(animValues[i], {
         toValue: target,
@@ -38,8 +39,8 @@ export function WaveformVisualizer({
       });
     });
 
-    // Run all bar animations in parallel
-    Animated.parallel(animations, { stopTogether: false }).start();
+    // Run all bar animations in parallel (filter out nulls from length mismatch)
+    Animated.parallel(animations.filter(Boolean) as Animated.CompositeAnimation[], { stopTogether: false }).start();
   }, [data, isActive]);
 
   const rgb = hexToRgb(color);

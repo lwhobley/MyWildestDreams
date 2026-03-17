@@ -6,6 +6,7 @@ import {
   Animated,
   Dimensions,
   ScrollView,
+  Pressable,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';

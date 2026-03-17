@@ -1,4 +1,5 @@
 import { corsHeaders } from '../_shared/cors.ts';
+import { getAuthenticatedUser } from '../_shared/auth.ts';
 
 // Google AI Studio — Gemini 2.0 Flash
 // Docs: https://ai.google.dev/api/generate-content
@@ -9,6 +10,14 @@ const GEMINI_URL = (model: string, key: string) =>
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
+  }
+
+  const user = await getAuthenticatedUser(req);
+  if (!user) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized' }),
+      { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   }
 
   try {

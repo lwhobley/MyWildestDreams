@@ -155,8 +155,7 @@ async function scheduleDailyReminder(): Promise<void> {
       data:  { type: 'daily_reminder' },
     },
     trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
-      repeats: true,
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
       hour: 8,
       minute: 0,
     },
@@ -174,8 +173,7 @@ async function scheduleStreakAtRisk(): Promise<void> {
       data:  { type: 'streak_risk' },
     },
     trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
-      repeats: true,
+      type: Notifications.SchedulableTriggerInputTypes.DAILY,
       hour: 21,
       minute: 0,
     },
@@ -193,8 +191,7 @@ async function scheduleWeeklyInsights(): Promise<void> {
       data:  { type: 'weekly_insights' },
     },
     trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.CALENDAR,
-      repeats: true,
+      type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
       weekday: 1, // Sunday (expo-notifications: 1 = Sunday)
       hour: 10,
       minute: 0,

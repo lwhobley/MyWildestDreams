@@ -66,7 +66,7 @@ export default function LibraryScreen() {
       );
     }
     return (
-      <View style={[styles.gridItem, index % 2 === 1 && styles.gridItemRight]}>
+      <View style={styles.gridItem}>
         <DreamCard
           dream={item}
           variant="grid"
@@ -319,8 +319,5 @@ const styles = StyleSheet.create({
   },
   gridItem: {
     flex: 1,
-  },
-  gridItemRight: {
-    marginLeft: 0,
   },
 });

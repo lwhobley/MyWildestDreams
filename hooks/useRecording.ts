@@ -109,16 +109,16 @@ export function useRecording() {
   // ── Stop Recording + Transcribe ────────────────────────────────────────────
 
   const stopRecording = useCallback(async () => {
-    setWaveformData(Array(WAVEFORM_BARS).fill(0.05));
-    setState('processing');
-    setRecordingDuration(0);
-
     const recording = recordingRef.current;
     if (!recording) {
       setState('error');
       setErrorMessage('Recording not found. Please try again.');
       return;
     }
+
+    setWaveformData(Array(WAVEFORM_BARS).fill(0.05));
+    setState('processing');
+    setRecordingDuration(0);
 
     try {
       // Remove status callback before stopping to avoid state updates on unmounted component

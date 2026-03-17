@@ -105,7 +105,12 @@ export async function getDreams(): Promise<Dream[]> {
   // Local fallback
   const raw = await AsyncStorage.getItem(APP_CONFIG.dreamsStorageKey);
   if (!raw) return getDefaultDreams();
-  return JSON.parse(raw);
+  try {
+    return JSON.parse(raw);
+  } catch {
+    console.warn('[dreamService] Corrupted local dreams data, resetting to defaults');
+    return getDefaultDreams();
+  }
 }
 
 // ── Write ──────────────────────────────────────────────────────────────────
@@ -159,7 +164,10 @@ export async function toggleFavorite(dreamId: string): Promise<Dream[]> {
   const updated = dreams.map((d) =>
     d.id === dreamId ? { ...d, isFavorite: newValue } : d
   );
-  await AsyncStorage.setItem(APP_CONFIG.dreamsStorageKey, JSON.stringify(updated));
+  // Only persist locally for guest users; authenticated users rely on Supabase
+  if (!userId) {
+    await AsyncStorage.setItem(APP_CONFIG.dreamsStorageKey, JSON.stringify(updated));
+  }
   return updated;
 }
 
@@ -183,7 +191,10 @@ export async function deleteDream(dreamId: string): Promise<Dream[]> {
 
   const dreams = await getDreams();
   const updated = dreams.filter((d) => d.id !== dreamId);
-  await AsyncStorage.setItem(APP_CONFIG.dreamsStorageKey, JSON.stringify(updated));
+  // Only persist locally for guest users; authenticated users rely on Supabase
+  if (!userId) {
+    await AsyncStorage.setItem(APP_CONFIG.dreamsStorageKey, JSON.stringify(updated));
+  }
   return updated;
 }
 
