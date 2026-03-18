@@ -59,6 +59,7 @@
       "router": {
         "origin": false
       }
-    }
+    },
+    "description": "Cosmic AI dream interpretation powered by Gemini"
   }
 }
