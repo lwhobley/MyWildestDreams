@@ -243,6 +243,38 @@ CREATE TABLE IF NOT EXISTS public.dreams (
   search_vector     TSVECTOR
 );
 
+-- ── Ensure all dreams columns exist (safe if table was pre-existing) ──────────
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS title           TEXT        NOT NULL DEFAULT '';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS description     TEXT        NOT NULL DEFAULT '';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS interpretation  TEXT        NOT NULL DEFAULT '';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS style_id        TEXT        NOT NULL DEFAULT 'surreal';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS mood_id         TEXT        NOT NULL DEFAULT 'mysterious';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS tags            TEXT[]      NOT NULL DEFAULT '{}';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS analysis        JSONB;
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS thumbnail_url   TEXT;
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS thumbnail_index SMALLINT    NOT NULL DEFAULT 1;
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS audio_url       TEXT;
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS duration        TEXT        NOT NULL DEFAULT '0:00';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS is_favorite     BOOLEAN     NOT NULL DEFAULT FALSE;
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS input_mode      TEXT        DEFAULT 'voice';
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW();
+ALTER TABLE public.dreams ADD COLUMN IF NOT EXISTS search_vector   TSVECTOR;
+
+-- Same safety net for user_profiles
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS username           TEXT;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS display_name       TEXT;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS avatar_url         TEXT;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS tier               TEXT NOT NULL DEFAULT 'free';
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS trial_ends_at      TIMESTAMPTZ;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS streak_count       INT  NOT NULL DEFAULT 0;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS last_dream_date    DATE;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS total_dreams       INT  NOT NULL DEFAULT 0;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS onboarding_done    BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS preferences        JSONB NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE public.user_profiles ADD COLUMN IF NOT EXISTS updated_at         TIMESTAMPTZ NOT NULL DEFAULT NOW();
+
+
 CREATE INDEX IF NOT EXISTS dreams_user_created  ON public.dreams(user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS dreams_user_favorite ON public.dreams(user_id, is_favorite) WHERE is_favorite = TRUE;
 CREATE INDEX IF NOT EXISTS dreams_user_style    ON public.dreams(user_id, style_id);
