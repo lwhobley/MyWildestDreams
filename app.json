@@ -8,6 +8,7 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#04030a",
     "splash": {
+      "image": "./src/assets/splash-icon.png",
       "backgroundColor": "#04030a",
       "resizeMode": "contain"
     },
@@ -24,6 +25,7 @@
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#04030a"
       },
       "package": "com.mywildestdreams.app",
@@ -35,7 +37,7 @@
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./src/assets/favicon.png",
+      "favicon": "./public/favicon.png",
       "themeColor": "#7b5ea7",
       "backgroundColor": "#04030a",
       "meta": {
