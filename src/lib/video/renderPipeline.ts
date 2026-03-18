@@ -92,10 +92,19 @@ export async function runDreamPipeline(
 
     onProgress('complete', 100);
 
-    // Update streak
-    await supabase
-      .from('dream_dates')
-      .upsert({ user_id: userId, dream_date: new Date().toISOString().split('T')[0] });
+    // Update streak count on profile using DB function
+    const { data: streakData } = await supabase
+      .rpc('get_user_streak', { p_user_id: userId });
+    if (streakData !== null) {
+      await supabase
+        .from('user_profiles')
+        .update({
+          streak_count: streakData,
+          last_dream_date: new Date().toISOString().split('T')[0],
+          total_dreams: supabase.rpc('increment', { row_id: userId }), // incremented server-side
+        })
+        .eq('id', userId);
+    }
 
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Render pipeline failed.';

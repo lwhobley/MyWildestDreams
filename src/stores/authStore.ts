@@ -29,7 +29,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     if (session) {
       const { data: profile } = await supabase
-        .from('profiles')
+        .from('user_profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (!data.user) throw new Error('Registration failed.');
 
     // Create profile
-    const { error: profileError } = await supabase.from('profiles').insert({
+    const { error: profileError } = await supabase.from('user_profiles').insert({
       id: data.user.id,
       email,
       display_name: displayName,
@@ -100,7 +100,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (!user) return;
 
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('user_profiles')
       .select('*')
       .eq('id', user.id)
       .single();
@@ -123,7 +123,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
     const updated = { ...current.preferences, ...prefs };
     await supabase
-      .from('profiles')
+      .from('user_profiles')
       .update({ preferences: updated })
       .eq('id', current.id);
 
