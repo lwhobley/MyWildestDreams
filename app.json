@@ -48,8 +48,6 @@
       }
     },
     "plugins": [
-      "expo-router",
-      "expo-secure-store",
       [
         "expo-av",
         {
@@ -60,10 +58,7 @@
         "expo-notifications",
         {
           "icon": "./src/assets/notification-icon.png",
-          "color": "#7b5ea7",
-          "sounds": [
-            "./src/assets/sounds/dream-chime.wav"
-          ]
+          "color": "#7b5ea7"
         }
       ]
     ],
