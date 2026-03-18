@@ -53,9 +53,6 @@
     },
     "scheme": "mywildestdreams",
     "extra": {
-      "eas": {
-        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
-      },
       "router": {
         "origin": false
       }
