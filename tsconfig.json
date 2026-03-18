@@ -4,18 +4,10 @@
     "strict": true,
     "paths": {
       "@/*":            ["./*"],
-      "@/src/*":        ["./src/*"],
       "@/components/*": ["./components/*"],
       "@/constants/*":  ["./constants/*"],
-      "@/contexts/*":   ["./contexts/*"],
       "@/hooks/*":      ["./hooks/*"],
-      "@/services/*":   ["./services/*"],
-      "@/utils/*":      ["./utils/*"],
-      "@/lib/*":        ["./src/lib/*"],
-      "@/stores/*":     ["./src/stores/*"],
-      "@/stores":       ["./src/stores/index"],
-      "@/types":        ["./src/types/index"],
-      "@/types/*":      ["./src/types/*"]
+      "@/assets/*":     ["./assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.d.ts", "expo-env.d.ts"]
