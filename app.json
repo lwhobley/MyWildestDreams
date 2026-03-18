@@ -11,7 +11,9 @@
       "backgroundColor": "#04030a",
       "resizeMode": "contain"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.mywildestdreams.app",
@@ -33,21 +35,33 @@
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./src/assets/favicon.png"
+      "favicon": "./src/assets/favicon.png",
+      "themeColor": "#7b5ea7",
+      "backgroundColor": "#04030a",
+      "meta": {
+        "apple-mobile-web-app-capable": "yes",
+        "apple-mobile-web-app-status-bar-style": "black-translucent",
+        "apple-mobile-web-app-title": "Dreams",
+        "mobile-web-app-capable": "yes"
+      }
     },
     "plugins": [
       "expo-router",
       "expo-secure-store",
       [
         "expo-av",
-        { "microphonePermission": "Allow My Wildest Dreams to record your dream descriptions." }
+        {
+          "microphonePermission": "Allow My Wildest Dreams to record your dream descriptions."
+        }
       ],
       [
         "expo-notifications",
         {
           "icon": "./src/assets/notification-icon.png",
           "color": "#7b5ea7",
-          "sounds": ["./src/assets/sounds/dream-chime.wav"]
+          "sounds": [
+            "./src/assets/sounds/dream-chime.wav"
+          ]
         }
       ]
     ],
@@ -56,8 +70,12 @@
     },
     "scheme": "mywildestdreams",
     "extra": {
-      "eas": { "projectId": "REPLACE_WITH_EAS_PROJECT_ID" },
-      "router": { "origin": false }
+      "eas": {
+        "projectId": "REPLACE_WITH_EAS_PROJECT_ID"
+      },
+      "router": {
+        "origin": false
+      }
     }
   }
 }
