@@ -19,7 +19,7 @@ import { WaveformVisualizer } from '@/components/ui/WaveformVisualizer';
 import { StyleSelectorCarousel } from '@/components/ui/StyleSelectorCarousel';
 import { DreamAnalysisCard, DreamAnalysis } from '@/components/ui/DreamAnalysisCard';
 import { useRecording } from '@/hooks/useRecording';
-import { analyzeDream, generateDreamImage, renderDreamscape, transcribeAudio } from '@/services/aiService';
+import { analyzeDream, generateDreamImage, renderDreamscape } from '@/services/aiService';
 import { useDreams } from '@/hooks/useDreams';
 import { generateDreamId } from '@/services/dreamService';
 import { Colors, Fonts, Spacing, Radius } from '@/constants/theme';

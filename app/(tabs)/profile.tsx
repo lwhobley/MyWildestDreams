@@ -15,7 +15,6 @@ import { DREAM_STYLES, DREAM_MOODS } from '@/constants/config';
 import { calculateStreak } from '@/services/dreamService';
 import { getSettings, updateSetting } from '@/services/settingsService';
 import { areNotificationsEnabled, requestNotificationPermission, scheduleAllNotifications, cancelAllNotifications } from '@/services/notificationService';
-import { useAuth } from '@/template';
 import { Colors, Fonts, Spacing, Radius } from '@/constants/theme';
 import { useAlert } from '@/template';
 
@@ -24,7 +23,8 @@ export default function ProfileScreen() {
   const { dreams, removeDream } = useDreams();
   const { showAlert } = useAlert();
 
-  const { user, logout } = useAuth();
+  const user: { username?: string; email?: string } | null = null;
+  const logout = async () => {};
   const [privacyMode, setPrivacyMode] = useState(true);
   const [autoCaption, setAutoCaption] = useState(true);
   const [ambientSounds, setAmbientSounds] = useState(false);
