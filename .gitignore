@@ -4,11 +4,12 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Environment
+# Environment — NEVER COMMIT
 .env
 .env.local
 .env.staging
 .env.production
+.env*.local
 
 # Credentials — NEVER COMMIT
 google-service-account.json

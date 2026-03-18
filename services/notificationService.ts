@@ -162,14 +162,34 @@ async function scheduleDailyReminder(): Promise<void> {
   });
 }
 
-// ─── 2. Streak at risk — 9:00 PM if no dream logged today ────────────────
+// ─── 2. Streak at risk — 9:00 PM only if no dream logged today ───────────
 
 async function scheduleStreakAtRisk(): Promise<void> {
+  const today = new Date().toDateString();
+  // Only schedule if user hasn't already logged a dream today
+  try {
+    const { getSharedSupabaseClient } = await import('@/template');
+    const supabase = getSharedSupabaseClient();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user?.id) {
+      const startOfDay = new Date();
+      startOfDay.setHours(0, 0, 0, 0);
+      const { count } = await supabase
+        .from('dreams')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', session.user.id)
+        .gte('created_at', startOfDay.toISOString());
+      if ((count ?? 0) > 0) return; // Dream already logged today — skip
+    }
+  } catch {
+    // If check fails, schedule anyway as fallback
+  }
+
   await Notifications.scheduleNotificationAsync({
     identifier: NOTIF_IDS.streakAtRisk,
     content: {
       title: '🔥 Your streak is at risk',
-      body:  'You haven\'t logged a dream today. Keep the chain alive — even a few words counts.',
+      body:  "You haven\'t logged a dream today. Keep the chain alive — even a few words counts.",
       data:  { type: 'streak_risk' },
     },
     trigger: {

@@ -29,7 +29,12 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { description, styleId } = await req.json();
+    const body = await req.json();
+    const description: string = body.description ?? '';
+
+    // Whitelist styleId to prevent prompt injection
+    const VALID_STYLES = ['surreal', 'cyberpunk', 'watercolor', 'noir', 'cosmic', 'gothic'];
+    const styleId = VALID_STYLES.includes(body.styleId) ? body.styleId : 'surreal';
 
     if (!description || description.trim().length < 5) {
       return new Response(

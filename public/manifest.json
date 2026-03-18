@@ -7,7 +7,11 @@
   "orientation": "portrait",
   "background_color": "#04030a",
   "theme_color": "#7b5ea7",
-  "categories": ["lifestyle", "health", "entertainment"],
+  "categories": [
+    "lifestyle",
+    "health",
+    "entertainment"
+  ],
   "lang": "en",
   "scope": "/",
   "icons": [
@@ -60,36 +64,30 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "/screenshots/home.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Home Screen — Dream Portal"
-    },
-    {
-      "src": "/screenshots/capture.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Dream Capture — Voice Recording"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Record a Dream",
       "short_name": "Record",
       "description": "Start recording your dream immediately",
       "url": "/capture",
-      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "My Library",
       "short_name": "Library",
       "description": "View your dream archive",
       "url": "/library",
-      "icons": [{ "src": "/icons/icon-96x96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "related_applications": [

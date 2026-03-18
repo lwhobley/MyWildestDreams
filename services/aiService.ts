@@ -142,7 +142,7 @@ function generatePoetictitle(description: string): string {
   const prefixes = ['The', 'A', 'When', 'Beyond', 'Within', 'Through', 'Where'];
   const words = description.split(' ').filter((w) => w.length > 4);
   const keyWord = words[Math.floor(Math.random() * Math.min(words.length, 5))] || 'Dream';
-  const clean = keyWord.charAt(0).toUpperCase() + keyWord.slice(1).replace(/[^a-zA-Z]/g, '');
+  const clean = (keyWord ?? 'Dream').charAt(0).toUpperCase() + (keyWord ?? 'Dream').slice(1).replace(/[^a-zA-Z]/g, '') || 'Dream';
   const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
   const suffixes = ['of Light', 'at Midnight', 'Unfolding', 'Unseen', 'Within', 'Beyond'];
   const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];

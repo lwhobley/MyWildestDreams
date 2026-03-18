@@ -238,24 +238,39 @@ export async function setOnboardingComplete(): Promise<void> {
 // ── Helpers ────────────────────────────────────────────────────────────────
 
 export function generateDreamId(): string {
-  return `dream_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  // Use crypto.randomUUID for unpredictable IDs
+  const uuid = typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 11)}`;
+  return `dream_${uuid}`;
 }
 
 export function calculateStreak(dreams: Dream[]): number {
   if (dreams.length === 0) return 0;
-  const sorted = [...dreams]
-    .map((d) => new Date(d.createdAt).toDateString())
-    .filter((v, i, a) => a.indexOf(v) === i)
-    .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
-  let streak = 0;
-  let cursor = new Date();
-  cursor.setHours(0, 0, 0, 0);
+  // Normalise each dream to local midnight, deduplicate days, sort descending
+  const toLocalMidnight = (iso: string): number => {
+    const d = new Date(iso);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  };
 
-  for (const dateStr of sorted) {
-    const d = new Date(dateStr);
-    const diff = Math.round((cursor.getTime() - d.getTime()) / 86400000);
-    if (diff <= 1) { streak++; cursor = d; } else break;
+  const uniqueDays = [...new Set(dreams.map((d) => toLocalMidnight(d.createdAt)))]
+    .sort((a, b) => b - a); // newest first
+
+  const todayMidnight = toLocalMidnight(new Date().toISOString());
+  const oneDayMs      = 86_400_000;
+
+  // Streak must start today or yesterday (allow up to 1 day gap to start)
+  if (uniqueDays[0] < todayMidnight - oneDayMs) return 0;
+
+  let streak = 1;
+  for (let i = 1; i < uniqueDays.length; i++) {
+    // Each consecutive day in the sorted list must be exactly 1 day earlier
+    if (uniqueDays[i - 1] - uniqueDays[i] === oneDayMs) {
+      streak++;
+    } else {
+      break;
+    }
   }
   return streak;
 }

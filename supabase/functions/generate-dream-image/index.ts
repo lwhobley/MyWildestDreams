@@ -140,12 +140,17 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { data: { publicUrl } } = supabase.storage
+    // Use signed URL (works for both public and private buckets)
+    const { data: signedData, error: signError } = await supabase.storage
       .from('dream-thumbnails')
-      .getPublicUrl(fileName);
+      .createSignedUrl(fileName, 60 * 60 * 24 * 365); // 1-year TTL for thumbnails
+
+    const thumbnailUrl = signError
+      ? supabase.storage.from('dream-thumbnails').getPublicUrl(fileName).data.publicUrl
+      : signedData?.signedUrl;
 
     return new Response(
-      JSON.stringify({ thumbnailUrl: publicUrl }),
+      JSON.stringify({ thumbnailUrl }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (err) {

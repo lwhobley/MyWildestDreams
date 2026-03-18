@@ -106,10 +106,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       .single();
 
     if (profile) {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
       set({
         user: profile as unknown as UserProfile,
         isAuthenticated: true,
-        session: { accessToken: '', userId: user.id },
+        session: currentSession
+          ? { accessToken: currentSession.access_token, userId: user.id }
+          : null,
       });
     }
   },

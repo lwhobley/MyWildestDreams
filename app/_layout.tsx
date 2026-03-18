@@ -3,9 +3,11 @@ import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AlertProvider, AuthProvider } from '@/template';
 import { DreamProvider } from '@/contexts/DreamContext';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export default function RootLayout() {
   return (
+    <ErrorBoundary>
     <AlertProvider>
       <SafeAreaProvider>
         <AuthProvider>
@@ -27,5 +29,6 @@ export default function RootLayout() {
         </AuthProvider>
       </SafeAreaProvider>
     </AlertProvider>
+    </ErrorBoundary>
   );
 }
