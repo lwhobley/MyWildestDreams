@@ -3,13 +3,12 @@ const path = require('path');
 
 const config = getDefaultConfig(__dirname);
 
-// Map @/stores, @/types, @/lib, @/hooks → src/ subdirectories
-// (the default @/* → ./* alias already handles everything else via tsconfig)
+// Map @/stores, @/types, @/lib → src/ subdirectories
+// NOTE: @/hooks intentionally excluded — root hooks/ takes priority via @/* → ./* alias
 const srcAliases = {
   '@/stores': path.resolve(__dirname, 'src/stores'),
   '@/types': path.resolve(__dirname, 'src/types'),
   '@/lib': path.resolve(__dirname, 'src/lib'),
-  '@/hooks': path.resolve(__dirname, 'src/hooks'),
 };
 
 const originalResolveRequest = config.resolver.resolveRequest;
