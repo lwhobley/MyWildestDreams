@@ -19,7 +19,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.mywildestdreams.app",
       "infoPlist": {
-        "NSMicrophoneUsageDescription": "We need microphone access to record your dream descriptions.",
+        "NSMicrophoneUsageDescription": "Allow My Wildest Dreams to record your dream descriptions.",
         "NSUserNotificationsUsageDescription": "Morning reminders help you capture dreams before they fade."
       }
     },
@@ -47,21 +47,7 @@
         "mobile-web-app-capable": "yes"
       }
     },
-    "plugins": [
-      [
-        "expo-av",
-        {
-          "microphonePermission": "Allow My Wildest Dreams to record your dream descriptions."
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./src/assets/notification-icon.png",
-          "color": "#7b5ea7"
-        }
-      ]
-    ],
+    "plugins": [],
     "experiments": {
       "typedRoutes": true
     },
